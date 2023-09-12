@@ -127,8 +127,8 @@ def main():
                 # float(loss.clone().detach().numpy())))
 
     batch_x = x_test[0:64]
-    nodes_q = variational({'x': batch_x}).nodes
-    z = nodes_q['z'].tensor
+    variational({'x': batch_x})
+    z = variational.z.sample()
     cache = generator({'z': z}).cache
     sample = cache['x_mean'].cpu().detach().numpy()
 

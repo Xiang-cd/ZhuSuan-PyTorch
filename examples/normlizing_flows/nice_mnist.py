@@ -32,10 +32,10 @@ class NICE(BayesianNet):
         self.sn(flow_dis, name="x", n_samples=-1)
 
     def sample(self, size):
-        return self.nodes["x"].dist.sample(size)
+        return self.x.dist.sample(size)
 
     def forward(self, x):
-        return self.nodes['x'].log_prob(x)
+        return self.x.log_prob(x)
 
 
 def main():

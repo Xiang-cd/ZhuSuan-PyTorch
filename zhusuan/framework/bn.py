@@ -147,6 +147,9 @@ class BayesianNet(nn.Module):
         :param kwargs: Parameters of the distribution which the node builds with.
         :return: A instance(sample) of the node.
         """
+        at = getattr(self, name, None)
+        if at is not None and  not isinstance(at, StochasticTensor):
+            raise ValueError("name of stochastic_node conflicts with existing attribute with same name")
         if isinstance(distribution, str):
             _dist = name_mapping[distribution](device=self.device, **kwargs)
             self._nodes[name] = StochasticTensor(self, name, _dist, n_samples=n_samples, **kwargs)
@@ -155,7 +158,13 @@ class BayesianNet(nn.Module):
             self._nodes[name] = StochasticTensor(self, name, distribution, n_samples=n_samples, **kwargs)
         else:
             raise ValueError('distribution must be name of sub class of Distribution or an instance of Distribution')
-        return self._nodes[name].tensor
+        return self._nodes[name].sample()
+    
+    def __getattr__(self, name):
+        if name in self._nodes:
+            return self._nodes[name]
+        else:
+            return super().__getattr__(name)
 
     def _log_joint(self):
         _ret = 0
@@ -210,7 +219,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -235,7 +244,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -259,7 +268,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -281,7 +290,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -305,7 +314,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -329,7 +338,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -353,7 +362,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -375,7 +384,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -401,7 +410,7 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")
 
@@ -427,6 +436,6 @@ class BayesianNet(nn.Module):
             )
             self._nodes[name] = StochasticTensor(self, name, distribution,
                                                  n_samples=n_samples, **kwargs)
-            return self._nodes[name].tensor
+            return self._nodes[name].sample()
         else:
             raise ValueError("name of stochastic_node must be str")

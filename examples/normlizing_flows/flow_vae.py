@@ -227,12 +227,12 @@ def main():
 
     # eval
     batch_x = x_test[0:batch_size]
-    nodes_q = variational({'x': torch.as_tensor(batch_x)}).nodes
-    z = nodes_q['z'].tensor
+    variational({'x': torch.as_tensor(batch_x)})
+    z = variational.z.sample()
     cache = generator({'z': z}).cache
     sample = cache['x_mean'].detach().cpu().numpy()
 
-    z = nodes_q['z'].tensor
+    z = variational.z.sample()
     cache = generator({'z': z}).cache
     sample_gen = cache['x_mean'].detach().cpu().numpy()
 
