@@ -37,16 +37,12 @@ class Generator(BayesianNet):
             name='z',
             mean=mean,
             std=std,
-            reparameterize=False,
-            reduce_mean_dims=[0],
-            reduce_sum_dims=[1])
+            reparameterize=False)
         x_probs = self.sequential(z)
         self.cache['x_mean'] = x_probs
         sample_x = self.bernoulli(
             name='x',
-            probs=x_probs,
-            reduce_mean_dims=[0],
-            reduce_sum_dims=[1])
+            probs=x_probs)
         return self
 
 
@@ -80,9 +76,7 @@ class Variational(BayesianNet):
             name='z',
             mean=z_mean,
             std=z_std,
-            reparameterize=True,
-            reduce_mean_dims=[0],
-            reduce_sum_dims=[1])
+            reparameterize=True)
         return self
 
 

@@ -36,14 +36,12 @@ class Generator(BayesianNet):
 
         prior = Normal(mean=torch.zeros([batch_len, self.z_dim]),
                        std=torch.ones([batch_len, self.z_dim]), dtype=torch.float32)
-        z = self.sn(prior, "z", reduce_mean_dims=[0], reduce_sum_dims=[1])
+        z = self.sn(prior, "z")
         x_probs = self.gen(z)
         self.cache['x_mean'] = x_probs
 
         dis = Bernoulli(probs=x_probs)
-        sample_x = self.sn(dis, "x",
-                           reduce_mean_dims=[0],
-                           reduce_sum_dims=[1])
+        sample_x = self.sn(dis, "x")
         assert (sample_x.shape[0] == batch_len)
 
         return self
@@ -77,9 +75,7 @@ class Variational(BayesianNet):
         z_sd = torch.exp(self.output_sd(z_logits))
 
         normal = Normal(mean=z_mean, std=z_sd, is_reparameterized=True)
-        z = self.sn(normal, "z",
-                    reduce_mean_dims=[0],
-                    reduce_sum_dims=[1])
+        z = self.sn(normal, "z")
         assert (z.shape[1] == self.z_dim)
         return self
 

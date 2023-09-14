@@ -55,8 +55,8 @@ class StochasticTensor(object):
         self._check_observation(observation)
         super(StochasticTensor, self).__init__()
 
-        self._reduce_mean_dims = kwargs.get("reduce_mean_dims", None)
-        self._reduce_sum_dims = kwargs.get("reduce_sum_dims", None)
+        self._reduce_mean_dims = kwargs.get("reduce_mean_dims", [0])
+        self._reduce_sum_dims = kwargs.get("reduce_sum_dims", [1])
         self._multiplier = kwargs.get("multiplier", None)
 
     def _check_observation(self, observation):
